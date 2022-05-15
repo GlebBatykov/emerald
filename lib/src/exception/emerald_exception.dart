@@ -1,9 +1,9 @@
 part of json_convert;
 
-class JsonConvertException implements Exception {
+class EmeraldException implements Exception {
   final String? message;
 
-  JsonConvertException([this.message]);
+  EmeraldException([this.message]);
 
   @override
   String toString() {

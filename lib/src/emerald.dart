@@ -29,7 +29,7 @@ part 'json_convert/json_serializer/decomposer/json_part.dart';
 part 'json_convert/json_serializer/json_serializer.dart';
 part 'json_convert/json_serializer/json_title.dart';
 
-part 'exception/json_convert_exception.dart';
+part 'exception/emerald_exception.dart';
 part 'exception/json_composer_exception.dart';
 part 'exception/json_decomposer_exception.dart';
 part 'exception/json_deserializer_exception.dart';

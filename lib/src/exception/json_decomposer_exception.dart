@@ -1,5 +1,5 @@
 part of json_convert;
 
-class JsonDecomposerException extends JsonConvertException {
+class JsonDecomposerException extends EmeraldException {
   JsonDecomposerException({String? message}) : super(message ?? '');
 }
