@@ -21,9 +21,9 @@ class User {
 void main() {
   var object = User('Alex', 21);
 
-  var json = Emerald.serializeObject(object);
+  var json = Emerald.serialize(object);
 
-  var deserialized = Emerald.deserializeObject<User>(json);
+  var deserialized = Emerald.deserialize<User>(json);
 
   var isEqual = object.isEqual(deserialized);
 

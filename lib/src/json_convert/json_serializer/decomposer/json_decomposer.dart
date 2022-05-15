@@ -1,10 +1,10 @@
 part of json_convert;
 
 class JsonDecomposer {
-  final List<ClassInfo> classReflectedInfo = [];
+  final List<ClassInfo> _classReflectedInfo = [];
 
   bool isClassReflected(String className) {
-    for (var info in classReflectedInfo) {
+    for (var info in _classReflectedInfo) {
       if (info.name == className) {
         return true;
       }
@@ -16,7 +16,7 @@ class JsonDecomposer {
   ClassInfo getClassInfo(String className) {
     late ClassInfo classInfo;
 
-    for (var info in classReflectedInfo) {
+    for (var info in _classReflectedInfo) {
       if (info.name == className) {
         classInfo = info;
       }
@@ -83,7 +83,7 @@ class JsonDecomposer {
 
       structure = _createJsonStructure(classInfo);
 
-      classReflectedInfo.add(classInfo);
+      _classReflectedInfo.add(classInfo);
     }
 
     var instanceMirror = reflect(object);

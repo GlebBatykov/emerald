@@ -17,7 +17,7 @@ void main() {
   var object = User('Alex', 21);
 
   // Serializes it to json string
-  var json = Emerald.serializeObject(object);
+  var json = Emerald.serialize(object);
 
   print(json);
 }

@@ -3,7 +3,7 @@ part of json_convert;
 class JsonSerializer {
   final JsonDecomposer _composer = JsonDecomposer();
 
-  String serializeObject(Object object) {
+  String serialize(Object object) {
     if (object is num) {
       return object.toString();
     } else if (object is bool) {

@@ -7,11 +7,10 @@ class Emerald {
 
   static final JsonDeserializer _deserializer = JsonDeserializer();
 
-  static String serializeObject(Object object) =>
-      _serializer.serializeObject(object);
+  static String serialize(Object object) => _serializer.serialize(object);
 
-  static T deserializeObject<T>(
+  static T deserialize<T>(
     String value,
   ) =>
-      _deserializer.deserializeObject<T>(value);
+      _deserializer.deserialize<T>(value);
 }

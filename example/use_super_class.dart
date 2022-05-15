@@ -11,7 +11,7 @@ abstract class User {
 class Gamer extends User {
   final int level;
 
-  Gamer(super.name, super.age, this.level);
+  Gamer(String name, int age, this.level) : super(name, age);
 
   bool isEqual(Gamer other) {
     return name == other.name && age == other.age && level == other.level;
@@ -23,10 +23,10 @@ void main() {
   var object = Gamer('Alex', 21, 2);
 
   // Serializes it to json string
-  var json = Emerald.serializeObject(object);
+  var json = Emerald.serialize(object);
 
   // Deserializes json string to instance of Gamer class
-  var deserialized = Emerald.deserializeObject<Gamer>(json);
+  var deserialized = Emerald.deserialize<Gamer>(json);
 
   // Checks is initial object and deserialized object equal
   var isEqual = object.isEqual(deserialized);
