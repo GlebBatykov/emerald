@@ -1,6 +1,6 @@
 <div align="center" width="200px">
 
-<img src="https://github.com/GlebBatykov/emerald/blob/dev/logo.png?raw=true" width="700px"/>
+<img src="https://github.com/GlebBatykov/emerald/blob/main/logo.png?raw=true" width="700px"/>
 
 <div align="center">
 
