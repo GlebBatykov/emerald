@@ -43,11 +43,13 @@ void main() {
   // Serializes it to json string
   var json = Emerald.serialize(object);
 
+  print(json);
+
   // Deserializes json string to instance of Gamer class
   var deserialized = Emerald.deserialize<User>(json);
 
   // Checks is initial object and deserialized object equal
   var isEqual = object.isEqual(deserialized);
 
-  print(isEqual);
+  print('Is initial object and deserialized object equal: $isEqual.');
 }
