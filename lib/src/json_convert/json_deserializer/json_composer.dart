@@ -16,6 +16,8 @@ class JsonComposer {
       return composeDouble(value);
     } else if (type == bool) {
       return composeBool(value);
+    } else if (type == dynamic) {
+      return value;
     } else {
       return composeObject(value, typeMirror);
     }

@@ -26,9 +26,14 @@ extension TypeExtension on Type {
     }
   }
 
-  bool isList() => reflectClass(this).name == reflectClass(List).name;
+  bool isList() =>
+      _isDynamic() ? false : reflectClass(this).name == reflectClass(List).name;
 
-  bool isMap() => reflectClass(this).name == reflectClass(Map).name;
+  bool isMap() =>
+      _isDynamic() ? false : reflectClass(this).name == reflectClass(Map).name;
 
-  bool isSet() => reflectClass(this).name == reflectClass(Set).name;
+  bool isSet() =>
+      _isDynamic() ? false : reflectClass(this).name == reflectClass(Set).name;
+
+  bool _isDynamic() => this == dynamic;
 }
