@@ -12,7 +12,7 @@ void main() {
   // Creates instance of your object
   var object = User('Alex', 21);
 
-  // Serializes it to json string
+  // Serializes instance of User to json string
   var json = Emerald.serialize(object);
 
   print(json);
