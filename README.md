@@ -6,6 +6,8 @@
 
 <div align="center">
 
+[![pub package](https://img.shields.io/pub/v/emerald.svg?label=emerald&color=blue)](https://pub.dev/packages/emerald)
+
 **Languages:**
   
 [![English](https://img.shields.io/badge/Language-English-blue?style=?style=flat-square)](README.md)
@@ -44,7 +46,7 @@ Add Emerald to your pubspec.yaml file:
 
 ```dart
 dependencies:
-  emerald: ^1.0.0
+  emerald: ^1.0.1
 ```
 
 Import emerald in file that it will be used:

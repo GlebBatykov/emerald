@@ -6,6 +6,8 @@
 
 <div align="center">
 
+[![pub package](https://img.shields.io/pub/v/emerald.svg?label=emerald&color=blue)](https://pub.dev/packages/emerald)
+
 **Языки:**
   
 [![English](https://img.shields.io/badge/Language-English-blue?style=?style=flat-square)](README.md)
@@ -43,7 +45,7 @@
 
 ```dart
 dependencies:
-  emerald: ^1.0.0
+  emerald: ^1.0.1
 ```
 
 Импортируйте ossa в файле где он должен использоваться:
