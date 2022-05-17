@@ -25,7 +25,7 @@ void main() {
   // Serializes it to json string
   var json = Emerald.serialize(object);
 
-  // Deserializes json string to instance of Gamer class
+  // Deserializes json string to instance of Gamer
   var deserialized = Emerald.deserialize<Gamer>(json);
 
   // Checks is initial object and deserialized object equal
