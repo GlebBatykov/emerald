@@ -115,6 +115,7 @@ class User {
 void main() {
   var json = '{"name": "Alex", "age": 21}';
 
+  // Deserializes json string to instance of class
   var object = Emerald.deserialize<User>(json);
 
   print(object);
