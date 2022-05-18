@@ -7,8 +7,8 @@ repository: https://github.com/GlebBatykov/emerald
 environment:
   sdk: '>=2.15.0 <3.0.0'
 
-# dependencies:
-#   path: ^1.8.0
+dependencies:
+  intl: ^0.17.0
 
 dev_dependencies:
   lints: ^1.0.1
