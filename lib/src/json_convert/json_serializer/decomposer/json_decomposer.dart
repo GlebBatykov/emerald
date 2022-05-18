@@ -3,7 +3,7 @@ part of json_convert;
 class JsonDecomposer {
   final List<ClassInfo> _classReflectedInfo = [];
 
-  bool isClassReflected(String className) {
+  bool _isClassReflected(String className) {
     for (var info in _classReflectedInfo) {
       if (info.name == className) {
         return true;
@@ -13,7 +13,7 @@ class JsonDecomposer {
     return false;
   }
 
-  ClassInfo getClassInfo(String className) {
+  ClassInfo _getClassInfo(String className) {
     late ClassInfo classInfo;
 
     for (var info in _classReflectedInfo) {
@@ -27,9 +27,9 @@ class JsonDecomposer {
 
   dynamic decomposeObject(dynamic object) {
     if (object is List) {
-      return decomposeList(object);
+      return _decomposeList(object);
     } else if (object is Map) {
-      return decomposeMap(object);
+      return _decomposeMap(object);
     } else if (object is Set) {
       throw JsonSerializerException(
           message: 'Converting object to an encodable object failed: $object');
@@ -38,14 +38,12 @@ class JsonDecomposer {
         object is bool ||
         object == null) {
       return object;
-    } else if (object is DateTime) {
-      return object.toString();
     } else {
-      return decomposeClass(object);
+      return _decomposeClass(object);
     }
   }
 
-  List decomposeList(List value) {
+  List _decomposeList(List value) {
     var list = [];
 
     for (var element in value) {
@@ -55,7 +53,7 @@ class JsonDecomposer {
     return list;
   }
 
-  Map decomposeMap(Map value) {
+  Map _decomposeMap(Map value) {
     var map = {};
 
     value.forEach((key, value) {
@@ -65,21 +63,23 @@ class JsonDecomposer {
     return map;
   }
 
-  Map<String, dynamic> decomposeClass(dynamic object) {
+  Map<String, dynamic> _decomposeClass(dynamic object) {
     var objectType = object.runtimeType;
 
     var structure = <JsonTitle, JsonPart?>{};
 
     var className = objectType.name;
 
-    if (isClassReflected(className)) {
-      var classInfo = getClassInfo(className);
+    late ClassInfo classInfo;
+
+    if (_isClassReflected(className)) {
+      classInfo = _getClassInfo(className);
 
       structure = _createJsonStructure(classInfo);
     } else {
       var classMirror = reflectClass(objectType);
 
-      var classInfo = ClassInfo.fromMirror(classMirror);
+      classInfo = ClassInfo.fromMirror(classMirror);
 
       structure = _createJsonStructure(classInfo);
 
@@ -91,7 +91,11 @@ class JsonDecomposer {
     for (var key in structure.keys) {
       var value = instanceMirror.getField(Symbol(key.fieldName)).reflectee;
 
-      value = decomposeObject(value);
+      if (value is DateTime) {
+        value = _decomposeDateTime(classInfo, key.fieldName, value);
+      } else {
+        value = decomposeObject(value);
+      }
 
       structure[key] = JsonPart(value);
     }
@@ -125,5 +129,19 @@ class JsonDecomposer {
     }
 
     return structure;
+  }
+
+  String _decomposeDateTime(
+      ClassInfo classInfo, String fieldName, DateTime value) {
+    var variableMirror =
+        classInfo.variables.firstWhere((element) => element.name == fieldName);
+
+    var jsonDateFormat = variableMirror.getJsonDateFormat();
+
+    if (jsonDateFormat != null) {
+      return DateFormat(jsonDateFormat.pattern).format(value);
+    } else {
+      return value.toString();
+    }
   }
 }

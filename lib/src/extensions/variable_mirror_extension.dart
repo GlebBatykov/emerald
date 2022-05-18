@@ -12,4 +12,10 @@ extension VariableMirrorExtension on VariableMirror {
 
     return properties.isNotEmpty ? properties.last : null;
   }
+
+  JsonDateFormat? getJsonDateFormat() {
+    var properties = AttributeReflection.reflect<JsonDateFormat>(this);
+
+    return properties.isNotEmpty ? properties.last : null;
+  }
 }

@@ -5,25 +5,25 @@ class JsonComposer {
     var type = typeMirror.reflectedType;
 
     if (type.isList()) {
-      return composeList(value, typeMirror);
+      return _composeList(value, typeMirror);
     } else if (type.isMap()) {
-      return composeMap(value, typeMirror);
+      return _composeMap(value, typeMirror);
     } else if (type == String) {
-      return composeString(value);
+      return _composeString(value);
     } else if (type == int) {
-      return composeInt(value);
+      return _composeInt(value);
     } else if (type == double) {
-      return composeDouble(value);
+      return _composeDouble(value);
     } else if (type == bool) {
-      return composeBool(value);
+      return _composeBool(value);
     } else if (type == dynamic) {
       return value;
     } else {
-      return composeObject(value, typeMirror);
+      return _composeObject(value, typeMirror);
     }
   }
 
-  bool? composeBool(dynamic value) {
+  bool? _composeBool(dynamic value) {
     if (value is bool) {
       return value;
     } else if (value is num) {
@@ -45,7 +45,7 @@ class JsonComposer {
     }
   }
 
-  double? composeDouble(dynamic value) {
+  double? _composeDouble(dynamic value) {
     if (value is double) {
       return value;
     } else if (value is int) {
@@ -62,7 +62,7 @@ class JsonComposer {
     }
   }
 
-  int? composeInt(dynamic value, {bool nullable = false}) {
+  int? _composeInt(dynamic value) {
     if (value is int) {
       return value;
     } else if (value is String) {
@@ -77,7 +77,7 @@ class JsonComposer {
     }
   }
 
-  String? composeString(dynamic value) {
+  String? _composeString(dynamic value) {
     if (value is String) {
       return value;
     } else if (value is num) {
@@ -96,7 +96,7 @@ class JsonComposer {
     }
   }
 
-  List? composeList(dynamic value, TypeMirror typeMirror) {
+  List? _composeList(dynamic value, TypeMirror typeMirror) {
     if (value is List) {
       var classMirror = typeMirror as ClassMirror;
 
@@ -118,7 +118,7 @@ class JsonComposer {
     }
   }
 
-  Map? composeMap(dynamic value, TypeMirror typeMirror) {
+  Map? _composeMap(dynamic value, TypeMirror typeMirror) {
     if (value is Map) {
       var classMirror = typeMirror as ClassMirror;
 
@@ -142,7 +142,7 @@ class JsonComposer {
     }
   }
 
-  dynamic composeObject(dynamic value, TypeMirror typeMirror) {
+  dynamic _composeObject(dynamic value, TypeMirror typeMirror) {
     if (value is Map<String, dynamic>) {
       var json = value;
 
@@ -161,7 +161,15 @@ class JsonComposer {
           if (value.runtimeType == variableTypeMirror.reflectedType) {
             instanceMirror.setField(variableMirror.simpleName, value);
           } else {
-            var composite = compose(value, variableTypeMirror);
+            var type = variableTypeMirror.reflectedType;
+
+            dynamic composite;
+
+            if (type == DateTime) {
+              composite = _composeDateTime(variableMirror, value);
+            } else {
+              composite = compose(value, variableTypeMirror);
+            }
 
             instanceMirror.setField(variableMirror.simpleName, composite);
           }
@@ -198,11 +206,19 @@ class JsonComposer {
 
     var namedArguments = <Symbol, dynamic>{};
 
-    for (var parameter in constructorMirror.positionalParameters) {
-      var jsonName = parameter.jsonName;
+    for (var parameterMirror in constructorMirror.positionalParameters) {
+      var jsonName = parameterMirror.jsonName;
 
       if (json.containsKey(jsonName)) {
-        var value = compose(json[jsonName], parameter.type);
+        var type = parameterMirror.type;
+
+        dynamic value;
+
+        if (type.reflectedType == DateTime) {
+          value = _composeDateTime(parameterMirror, json[jsonName]);
+        } else {
+          value = compose(json[jsonName], type);
+        }
 
         positionalArguments.add(value);
       } else {
@@ -210,15 +226,23 @@ class JsonComposer {
       }
     }
 
-    for (var parameter in constructorMirror.namedParameters) {
-      var jsonName = parameter.jsonName;
+    for (var parameterMirror in constructorMirror.namedParameters) {
+      var jsonName = parameterMirror.jsonName;
 
       if (json.containsKey(jsonName)) {
-        var value = compose(json[jsonName], parameter.type);
+        var type = parameterMirror.type;
 
-        namedArguments[Symbol(parameter.name)] = value;
+        dynamic value;
+
+        if (type.reflectedType == DateTime) {
+          value = _composeDateTime(parameterMirror, json[jsonName]);
+        } else {
+          value = compose(json[jsonName], parameterMirror.type);
+        }
+
+        namedArguments[Symbol(parameterMirror.name)] = value;
       } else {
-        namedArguments[Symbol(parameter.name)] = null;
+        namedArguments[Symbol(parameterMirror.name)] = null;
       }
     }
 
@@ -286,5 +310,20 @@ class JsonComposer {
     }
 
     return defaultConstructor;
+  }
+
+  DateTime _composeDateTime(VariableMirror parameterMirror, dynamic value) {
+    if (value is String) {
+      var jsonDateFormat = parameterMirror.getJsonDateFormat();
+
+      if (jsonDateFormat != null) {
+        return DateFormat(jsonDateFormat.pattern).parse(value);
+      } else {
+        return DateTime.parse(value);
+      }
+    } else {
+      throw JsonDeserializerException(
+          message: 'Can\'t convert ${value.runtimeType} to DateTime.');
+    }
   }
 }

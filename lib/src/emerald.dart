@@ -3,10 +3,13 @@ library json_convert;
 import 'dart:convert';
 import 'dart:mirrors';
 
+import 'package:intl/intl.dart';
+
 part 'annotation/attribute.dart';
 part 'annotation/json_constructor.dart';
 part 'annotation/json_property.dart';
 part 'annotation/json_parameter.dart';
+part 'annotation/json_date_format.dart';
 
 part 'reflaction/attribute_reflection.dart';
 
