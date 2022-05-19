@@ -6,7 +6,7 @@ class User {
   final int age;
 
   // Use json property annotation for ignore this field
-  @JsonProperty(ignore: true)
+  @jsonPropertyIgnore
   final int someCalculateField;
 
   User(this.name, this.age) : someCalculateField = age * 2;

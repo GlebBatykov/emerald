@@ -1,2 +1,9 @@
 export 'src/emerald.dart'
-    show Emerald, Attribute, JsonParameter, jsonConstructor, JsonProperty;
+    show
+        Emerald,
+        Attribute,
+        JsonParameter,
+        jsonConstructor,
+        JsonProperty,
+        jsonPropertyIgnore,
+        JsonDateFormat;

@@ -1,5 +1,7 @@
 part of json_convert;
 
+const jsonPropertyIgnore = JsonProperty(ignore: true);
+
 /// Used for set properties to class field.
 class JsonProperty extends Attribute {
   /// Name of the field to be used for serialization and deserialization.
