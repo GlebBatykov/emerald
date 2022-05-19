@@ -139,7 +139,17 @@ class JsonDecomposer {
     var jsonDateFormat = variableMirror.getJsonDateFormat();
 
     if (jsonDateFormat != null) {
-      return DateFormat(jsonDateFormat.pattern).format(value);
+      late DateFormat dateFormat;
+
+      try {
+        dateFormat = DateFormat(jsonDateFormat.pattern);
+      } catch (_) {
+        throw JsonDecomposerException(
+            message:
+                'Date format pattern ${jsonDateFormat.pattern} is not correct.');
+      }
+
+      return dateFormat.format(value);
     } else {
       return value.toString();
     }

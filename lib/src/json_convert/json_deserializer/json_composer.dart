@@ -317,7 +317,17 @@ class JsonComposer {
       var jsonDateFormat = parameterMirror.getJsonDateFormat();
 
       if (jsonDateFormat != null) {
-        return DateFormat(jsonDateFormat.pattern).parse(value);
+        late DateFormat dateFormat;
+
+        try {
+          dateFormat = DateFormat(jsonDateFormat.pattern);
+        } catch (_) {
+          throw JsonComposerException(
+              message:
+                  'Date format pattern ${jsonDateFormat.pattern} is not correct.');
+        }
+
+        return dateFormat.parse(value);
       } else {
         return DateTime.parse(value);
       }
