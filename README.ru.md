@@ -22,6 +22,8 @@
   - [JSON конструктор](#json-конструктор)
   - [Игнорирование полей](#игнорирование-полей)
   - [Изменение имен JSON полей](#изменение-имен-json-полей)
+  - [Работа с датами](#работа-с-датами)
+
 # Введение
 
 В Dart существует множество пакетов для JSON сериализации/десериализации, однако практически все они завязаны на генерации кода. Связанно это с AOT компиляцией и тем что библиотека для рефлексии в Dart (dart:mirros) работает только с JIT компиляцией, следовательно она не доступна в Flutter.
@@ -45,7 +47,7 @@
 
 ```dart
 dependencies:
-  emerald: ^1.0.1
+  emerald: ^1.1.0
 ```
 
 Импортируйте ossa в файле где он должен использоваться:
@@ -323,4 +325,47 @@ void main() {
 ```dart
 {"custom_name":"Alex","custom_age":21}
 true
+```
+
+## Работа с датами
+
+Для форматирования DateTime при сериализации и десериализации в Emerald есть аннотация @JsonDateFormat. При помощи неё можно задать шаблон конвертации даты, используются шаблоны доступные в пакете [intl](https://pub.dev/packages/intl).
+
+Пример использования аннотации @JsonDateFormat для форматирования даты при сериализации:
+
+```dart
+class Report {
+  // Create pattern for date time serialize and deserialize
+  static const jsonDateFormat = JsonDateFormat(pattern: 'yMd');
+
+  final String title;
+
+  // Set date time format annotation to field
+  @jsonDateFormat
+  DateTime date;
+
+  // Set date time format annotation to constructor property
+  Report(this.title, @jsonDateFormat this.date);
+}
+
+void main() {
+  var object = Report('Old report', DateTime.now());
+
+  // Serializes instance of User to json string
+  var json = Emerald.serialize(object);
+
+  print(json);
+
+  // Deserializes json string to instance of class
+  var deserialized = Emerald.deserialize<Report>(json);
+
+  print(deserialized.date);
+}
+```
+
+Возможный вывод:
+
+```dart
+{"title":"Old report","date":"6/16/2022"}
+2022-06-16 00:00:00.000
 ```

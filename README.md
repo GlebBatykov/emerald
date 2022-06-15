@@ -22,6 +22,7 @@
   - [JSON constructor](#json-constructor)
   - [Ignore fields](#ignore-fields)
   - [Change name of JSON fields](#change-name-of-json-fields)
+  - [Working with dates](#working-with-dates)
 
 # Introduction
 
@@ -324,4 +325,47 @@ Expected output:
 ```dart
 {"custom_name":"Alex","custom_age":21}
 true
+```
+
+## Working with dates
+
+For DateTime formatting during serialization and deserialization, Emerald has an annotation @JsonDateFormat. With it, you can set a date conversion template, using the templates available in the package [intl](https://pub.dev/packages/intl).
+
+Example of using the @JsonDateFormat annotation to format a date during serialization:
+
+```dart
+class Report {
+  // Create pattern for date time serialize and deserialize
+  static const jsonDateFormat = JsonDateFormat(pattern: 'yMd');
+
+  final String title;
+
+  // Set date time format annotation to field
+  @jsonDateFormat
+  DateTime date;
+
+  // Set date time format annotation to constructor property
+  Report(this.title, @jsonDateFormat this.date);
+}
+
+void main() {
+  var object = Report('Old report', DateTime.now());
+
+  // Serializes instance of User to json string
+  var json = Emerald.serialize(object);
+
+  print(json);
+
+  // Deserializes json string to instance of class
+  var deserialized = Emerald.deserialize<Report>(json);
+
+  print(deserialized.date);
+}
+```
+
+Possible conclusion:
+
+```dart
+{"title":"Old report","date":"6/16/2022"}
+2022-06-16 00:00:00.000
 ```
