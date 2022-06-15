@@ -1,8 +1,12 @@
+# 1.1.0
+
+- Add functions for convert with DateTime.
+
 ## 1.0.1
 
 - Update documentation.
-- Adds README to examples.
+- Add README to examples.
 
-# 1.0.0
+## 1.0.0
 
 - Initial version.
