@@ -4,6 +4,7 @@ import 'package:test/test.dart';
 import 'annotation/constructor/test_class_3.dart';
 import 'annotation/constructor/test_class_4.dart';
 import 'annotation/constructor/test_class_5.dart';
+import 'annotation/convert_date/test_class_9.dart';
 import 'annotation/custom_json_field_names/test_class_6.dart';
 import 'annotation/custom_json_field_names/test_class_7.dart';
 import 'annotation/ignore_json_fields/test_class_8.dart';
@@ -304,6 +305,20 @@ void main() {
         var json = Emerald.serialize(object);
 
         expect(json, '{"value":"someValue"}');
+      });
+
+      test('Format DateTime fields, using @JsonDateFormat annotation.', () {
+        var dateTimeNow = DateTime.now();
+
+        var object = TestClass9('test', dateTimeNow);
+
+        var json = Emerald.serialize(object);
+
+        expect(json, '{"title":"test","date":"${dateTimeNow.year}"}');
+
+        var deserialized = Emerald.deserialize<TestClass9>(json);
+
+        expect(deserialized.date.year, dateTimeNow.year);
       });
     });
   });
