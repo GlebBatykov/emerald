@@ -1,11 +1,10 @@
 name: emerald
 description: Simple json serializer/deserializer for Dart (only JIT, not Flutter).
-version: 1.0.1
+version: 1.1.0
 repository: https://github.com/GlebBatykov/emerald
 
-
 environment:
-  sdk: '>=2.15.0 <3.0.0'
+  sdk: ">=2.15.0 <3.0.0"
 
 dependencies:
   intl: ^0.17.0
