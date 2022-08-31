@@ -47,7 +47,7 @@ Add Emerald to your pubspec.yaml file:
 
 ```dart
 dependencies:
-  emerald: ^1.0.1
+  emerald: ^1.1.1
 ```
 
 Import emerald in file that it will be used:
